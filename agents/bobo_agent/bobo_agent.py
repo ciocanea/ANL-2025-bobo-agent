@@ -2,6 +2,7 @@ import logging
 from random import randint
 from time import time
 from typing import cast
+import os
 
 from geniusweb.actions.Accept import Accept
 from geniusweb.actions.Action import Action
@@ -48,9 +49,8 @@ class BoboAgent(DefaultParty):
         self.settings: Settings = None
         self.storage_dir: str = None
         self.opponent_utils = []  # Store all predicted utilities of opponent's offers
-        self.opponent_is_greedy = False # Flag is the robot is a bully (utility always over 0.9)
-        self.opponent_is_nice = False # Flag for nice robots
-
+        self.opponent_is_greedy = False  # Flag is the robot is a bully (utility always over 0.9)
+        self.opponent_is_nice = False  # Flag for nice robots
 
         self.last_received_bid: Bid = None
         self.opponent_model: OpponentModel = None
@@ -89,6 +89,7 @@ class BoboAgent(DefaultParty):
             )
             self.profile = profile_connection.getProfile()
             self.domain = self.profile.getDomain()
+            self.load_opponent_data()
             profile_connection.close()
 
         # ActionDone informs you of an action (an offer or an accept)
@@ -96,6 +97,7 @@ class BoboAgent(DefaultParty):
         elif isinstance(data, ActionDone):
             action = cast(ActionDone, data).getAction()
             actor = action.getActor()
+
 
             # ignore action if it is our action
             if actor != self.me:
@@ -118,6 +120,19 @@ class BoboAgent(DefaultParty):
         else:
             self.logger.log(logging.WARNING, "Ignoring unknown info " + str(data))
 
+    def load_opponent_data(self):
+        """Loads opponent history from data.md if available."""
+        data_path = os.path.join(self.storage_dir, "data.md")
+        if not os.path.exists(data_path):
+            return
+
+        with open(data_path, "r") as f:
+            for line in f:
+                parts = line.strip().split(",")
+                if len(parts) == 3 and parts[0] == self.other:
+                    self.opponent_is_greedy = parts[1] == "True"
+                    self.opponent_is_nice = parts[2] == "True"
+                    break  # Stop searching once found
     def getCapabilities(self) -> Capabilities:
         """MUST BE IMPLEMENTED
         Method to indicate to the protocol what the capabilities of this agent are.
@@ -172,12 +187,10 @@ class BoboAgent(DefaultParty):
             if len(self.opponent_utils) >= 3:
                 recent = self.opponent_utils[-5:]
                 avg_util = sum(recent) / len(recent)
-                if avg_util > 0.87:  # average utils so we consider a robot bully and change our appraoch 
+                if avg_util > 0.87:  # average utils so we consider a robot bully and change our appraoch
                     self.opponent_is_greedy = True
                 if 0.6 < avg_util < 0.9:
                     self.opponent_is_nice = True
-
-
 
     def my_turn(self):
         """This method is called when it is our turn. It should decide upon an action
@@ -196,13 +209,16 @@ class BoboAgent(DefaultParty):
         self.send_action(action)
 
     def save_data(self):
-        """This method is called after the negotiation is finished. It can be used to store data
-        for learning capabilities. Note that no extensive calculations can be done within this method.
-        Taking too much time might result in your agent being killed, so use it for storage only.
-        """
-        data = "Data for learning (see README.md)"
-        with open(f"{self.storage_dir}/data.md", "w") as f:
-            f.write(data)
+        """Stores opponent behavior data in data.md."""
+        if self.other is None:
+            return  # No opponent data to save
+
+        data_path = os.path.join(self.storage_dir, "data.md")
+        opponent_data = f"{self.other},{self.opponent_is_greedy},{self.opponent_is_nice}\n"
+
+        # Append data without overwriting
+        with open(data_path, "a") as f:
+            f.write(opponent_data)
 
     ###########################################################################################
     ################################## Example methods below ##################################
@@ -224,7 +240,6 @@ class BoboAgent(DefaultParty):
     #     ]
     #     return all(conditions)
 
-
     def accept_condition(self, bid: Bid) -> bool:
         # if there's no bid, nothing to accept
         if bid is None:
@@ -237,10 +252,10 @@ class BoboAgent(DefaultParty):
         # if the offer is really good, we can accept straight away, no need to gamble for more
         if offered_util >= 0.9:
             return True
-        
+
         if self.opponent_is_greedy and offered_util > 0.65:
             return True  # Take the decent deal while you can
-    
+
         if self.opponent_model:
             opponent_util = float(self.opponent_model.get_predicted_utility(bid))
 
@@ -252,7 +267,7 @@ class BoboAgent(DefaultParty):
                 elif progress > 0.97 and offered_util > 0.7:
                     return True
                 else:
-                    return False  # if he gives us less than 0.6 he can go f himself 
+                    return False  # if he gives us less than 0.6 he can go f himself
 
             # If both sides get 0.75+, accept — it’s fair
             if self.opponent_is_nice and progress > 0.95:
@@ -263,7 +278,7 @@ class BoboAgent(DefaultParty):
             if progress > 0.6 and offered_util > 0.6 and opponent_util < 0.5:
                 return True
 
-            # Accept near end if both sides are being fair 
+            # Accept near end if both sides are being fair
             if progress > 0.97 and float(offered_util) > 0.85 and float(opponent_util) < 0.6:
                 return True  # they're conceding, let's lock the win
 
@@ -279,7 +294,7 @@ class BoboAgent(DefaultParty):
             if progress > 0.93 and offered_util > 0.65 and opponent_util < 0.5:
                 return True
 
-        # worst case, if we are close to the deadline and nothing accepted so far, we accept a decent utility score to avoid negotiation failure, further from the 
+        # worst case, if we are close to the deadline and nothing accepted so far, we accept a decent utility score to avoid negotiation failure, further from the
         # deadline, we need more utility to accept
         if progress > 0.98:  # was 0.99 before, this gives a bit more time to respond
             return offered_util > 0.70
@@ -297,7 +312,7 @@ class BoboAgent(DefaultParty):
         domain = self.profile.getDomain()
         # all possible bids in the domain (its finite)
         all_bids = AllBidsList(domain)
-        
+
         # initalize variables for later
         best_bid_score = 0.0
         best_bid = None
@@ -305,20 +320,20 @@ class BoboAgent(DefaultParty):
         # progress so far in the bid wars
         progress = self.progress.get(time() * 1000)
         # we define the minimum utility we would want a bid to have to be considered, it decreases at time passes since we are getting close to the
-        min_util = 0.85 * (1 - 0.25 * progress)  # more assertive min util 
+        min_util = 0.85 * (1 - 0.25 * progress)  # more assertive min util
 
         # we are random sampling 500 binds
-        for _ in range(500): 
+        for _ in range(500):
             bid = all_bids.get(randint(0, all_bids.size() - 1))
-            
+
             # ensure we don't concede too much unless we have to, if its too low we skip it based on the minimum utility we calculated for this round
             if self.profile.getUtility(bid) < min_util:
                 continue
-            
+
             # we score the bid based on the score bid method which combines our utilities together and time pressure into a score
             bid_score = self.score_bid(bid)
 
-            # if this is the best bid we have seen so far, we store it 
+            # if this is the best bid we have seen so far, we store it
             if bid_score > best_bid_score:
                 best_bid_score, best_bid = bid_score, bid
 
@@ -327,7 +342,6 @@ class BoboAgent(DefaultParty):
             best_bid = all_bids.get(randint(0, all_bids.size() - 1))  # safety
 
         return best_bid
-
 
     def score_bid(self, bid: Bid, alpha: float = 0.95, eps: float = 0.1) -> float:
         """Calculate heuristic score for a bid
@@ -380,7 +394,6 @@ class BoboAgent(DefaultParty):
         if self.opponent_is_greedy:
             # ignore their utility if is greedy,  just care about our utility
             return float(self.profile.getUtility(bid))
-        
 
         # calculate our otility at the moment based on this bid
         our_utility = float(self.profile.getUtility(bid))
@@ -392,7 +405,7 @@ class BoboAgent(DefaultParty):
 
         if self.opponent_model is not None:
             # get oponent's predicted utility
-            opponent_utility = self.opponent_model.get_predicted_utility(bid) 
+            opponent_utility = self.opponent_model.get_predicted_utility(bid)
             # calculate the oponents score to complement our score to get to a total of 1 potentially
             opponent_score = (1.0 - alpha * time_pressure) * opponent_utility
             score += opponent_score
