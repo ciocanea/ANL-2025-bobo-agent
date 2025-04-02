@@ -267,7 +267,7 @@ class BoboAgent(DefaultParty):
                 elif progress > 0.97 and offered_util > 0.7:
                     return True
                 else:
-                    return False  # if he gives us less than 0.6 he can go f himself
+                    return False # we dont accept anything less
 
             # If both sides get 0.75+, accept — it’s fair
             if self.opponent_is_nice and progress > 0.95:
