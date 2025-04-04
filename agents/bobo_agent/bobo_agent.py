@@ -282,9 +282,6 @@ class BoboAgent(DefaultParty):
             if progress > 0.95 and opponent_util > 0.9 and offered_util < 0.7:
                 return False  # opponent is being greedy, don’t accept low
 
-            # Accept if opponent finally concedes and we got something okay
-            if progress > 0.93 and offered_util > 0.65 and opponent_util < 0.5:
-                return True
 
         # worst case, if we are close to the deadline and nothing accepted so far, we accept a decent utility score to avoid negotiation failure, further from the
         # deadline, we need more utility to accept
