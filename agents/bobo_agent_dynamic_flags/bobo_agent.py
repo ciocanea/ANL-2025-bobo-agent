@@ -124,10 +124,10 @@ class BoboAgentDynamic(DefaultParty):
                 progress = self.progress.get(time() * 1000)
 
                 # Greedy weight (slower increase)
-                self.greedy_weight = min(1.0, max(0.0, avg_util - 0.5 - 0.15 * progress))
+                self.greedy_weight = min(1.0, max(0.0, abs(avg_util - 0.5) * 2 - 0.15 * progress))
 
                 # Nice weight (more stable, increases later)
-                self.nice_weight = min(1.0, max(0.0, 1.2 - avg_util + 0.15 * progress))
+                self.nice_weight = min(1.0, max(0.0, 1.3 - avg_util - 0.15 * progress))
 
     def my_turn(self):
         """Executes the next action."""

@@ -189,8 +189,10 @@ class BoboAgent(DefaultParty):
                 avg_util = sum(recent) / len(recent)
                 if avg_util > 0.87:  # average utils so we consider a robot bully and change our appraoch
                     self.opponent_is_greedy = True
-                if 0.6 < avg_util < 0.9:
+                    self.opponent_is_nice = False
+                if 0.6 < avg_util < 0.85:
                     self.opponent_is_nice = True
+                    self.opponent_is_greedy = False
 
     def my_turn(self):
         """This method is called when it is our turn. It should decide upon an action
@@ -259,28 +261,18 @@ class BoboAgent(DefaultParty):
         if self.opponent_model:
             opponent_util = float(self.opponent_model.get_predicted_utility(bid))
 
-            # --- Handle hardliner bots ---
-            # If opponent never concedes and offers bad utility, do NOT accept, even at the end
-            if self.opponent_is_greedy:
-                if progress > 0.99 and offered_util > 0.6:
-                    return True  # last resort, avoid 0 if offer is not too bad
-                elif progress > 0.97 and offered_util > 0.7:
-                    return True
-                else:
-                    return False # we dont accept anything less
-
             # If both sides get 0.75+, accept — it’s fair
-            if self.opponent_is_nice and progress > 0.95:
+            if self.opponent_is_nice and progress > 0.75:
                 if offered_util > 0.75 and opponent_util > 0.7:
                     return True
 
             # If opponent is conceding early and we got something decent
-            if progress > 0.6 and offered_util > 0.6 and opponent_util < 0.5:
+            if progress < 0.6 and offered_util > 0.75 and opponent_util < 0.7:
                 return True
 
             # Accept near end if both sides are being fair
-            if progress > 0.97 and float(offered_util) > 0.85 and float(opponent_util) < 0.6:
-                return True  # they're conceding, let's lock the win
+            if progress > 0.97 and float(offered_util) > 0.85 and float(opponent_util) > 0.6:
+                return True
 
             # If both agents do well together, accept Nash-like reasoning
             if not self.opponent_is_greedy and float(offered_util) * float(opponent_util) > 0.75:
@@ -296,14 +288,9 @@ class BoboAgent(DefaultParty):
 
         # worst case, if we are close to the deadline and nothing accepted so far, we accept a decent utility score to avoid negotiation failure, further from the
         # deadline, we need more utility to accept
-        if progress > 0.98:  # was 0.99 before, this gives a bit more time to respond
-            return offered_util > 0.70
-        elif progress > 0.97:
-            return offered_util > 0.75
-        elif progress > 0.96:
-            return offered_util > 0.8
-        elif progress > 0.95:
-            return offered_util > 0.85
+        if progress > 0.95:
+            threshold = -5 * (progress - 0.95) + 0.85
+            return offered_util > threshold
         return False
 
     # this method finds a good bid to send the oponent, using heuristics and sampling
@@ -323,7 +310,7 @@ class BoboAgent(DefaultParty):
         min_util = 0.85 * (1 - 0.25 * progress)  # more assertive min util
 
         # we are random sampling 500 binds
-        for _ in range(500):
+        for _ in range(1000):
             bid = all_bids.get(randint(0, all_bids.size() - 1))
 
             # ensure we don't concede too much unless we have to, if its too low we skip it based on the minimum utility we calculated for this round
@@ -343,7 +330,7 @@ class BoboAgent(DefaultParty):
 
         return best_bid
 
-    def score_bid(self, bid: Bid, alpha: float = 0.95, eps: float = 0.1) -> float:
+    def score_bid(self, bid: Bid, alpha: float = 0.75, eps: float = 0.1) -> float:
         """Calculate heuristic score for a bid
 
         Args:
@@ -356,8 +343,10 @@ class BoboAgent(DefaultParty):
         Returns:
             float: score
         """
+
         if self.opponent_model is None:
             # fallback: only consider our own utility
+            print("NO MODEL")
             our_utility = float(self.profile.getUtility(bid))
             progress = self.progress.get(time() * 1000)
             time_pressure = 1.0 - progress ** (1 / eps)
@@ -372,6 +361,7 @@ class BoboAgent(DefaultParty):
         if not self.opponent_is_greedy:
             rejection_threshold = 0.1 - 0.08 * progress
             if opponent_utility < rejection_threshold:
+                print("rej thresh")
                 return 0.0
         else:
             opponent_utility = 0.5  # fallback
@@ -384,19 +374,24 @@ class BoboAgent(DefaultParty):
         # else:
         #     alpha = 0.5   # fully cooperating with the oponent to find a common point to make a deal
 
-        if self.opponent_is_nice:
+        if self.opponent_is_nice and progress <0.66:
             alpha = 0.7  # favor fairness more
         elif self.opponent_is_greedy:
             alpha = 0.95  # favor ourselves
         else:
             alpha = 0.95 - 0.45 * progress
 
-        if self.opponent_is_greedy:
-            # ignore their utility if is greedy,  just care about our utility
-            return float(self.profile.getUtility(bid))
 
         # calculate our otility at the moment based on this bid
         our_utility = float(self.profile.getUtility(bid))
+        print(our_utility)
+        if not self.opponent_is_greedy: #penalize greedyness late, unless the opponent is also greedy
+            if our_utility > 0.9 and progress > 0.6:
+                our_utility = our_utility -0.1
+            if our_utility > 0.8 and progress > 0.8:#they are meant to stack
+                our_utility = our_utility -0.2
+            if our_utility > 0.8 and progress > 0.9:
+                our_utility = our_utility -0.3
 
         # calculate if there's any time pressure or not
         time_pressure = 1.0 - progress ** (1 / eps)
@@ -411,4 +406,5 @@ class BoboAgent(DefaultParty):
             score += opponent_score
 
         # return the expected score between both robots based on the moment of the game
+        print("normal game")
         return score

@@ -18,15 +18,14 @@ if not RESULTS_DIR.exists():
 settings = {
     "agents": [
         {
-            "class": "agents.bobo_agent_dynamic_flags.bobo_agent.BoboAgentDynamic",
-            "parameters": {"storage_dir": "agent_storage/BoboAgentDynamic"},
+            "class": "agents.linear_agent.linear_agent.LinearAgent",
         },
         {
             "class": "agents.bobo_agent.bobo_agent.BoboAgent",
             "parameters": {"storage_dir": "agent_storage/BoboAgent"},
         },
     ],
-    "profiles": ["domains/domain00/profileA.json", "domains/domain00/profileB.json"],
+    "profiles": ["domains/domain02/profileA.json", "domains/domain02/profileB.json"],
     "deadline_time_ms": 10000,
 }
 
