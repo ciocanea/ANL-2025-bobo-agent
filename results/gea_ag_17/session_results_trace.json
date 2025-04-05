@@ -1,0 +1,157 @@
+{
+  "actions": [
+    {
+      "Offer": {
+        "actor": "agents_ANL2022_gea_agent_gea_agent_GEAAgent_1",
+        "bid": {
+          "issuevalues": {
+            "issueA": "valueA",
+            "issueD": "valueL",
+            "issueB": "valueC",
+            "issueC": "valueL"
+          }
+        },
+        "utilities": {
+          "agents_ANL2022_gea_agent_gea_agent_GEAAgent_1": 0.891327963,
+          "agents_bobo_agent_bobo_agent_BoboAgent_2": 0.3593400847
+        }
+      }
+    },
+    {
+      "Offer": {
+        "actor": "agents_bobo_agent_bobo_agent_BoboAgent_2",
+        "bid": {
+          "issuevalues": {
+            "issueA": "valueA",
+            "issueD": "valueI",
+            "issueB": "valueA",
+            "issueC": "valueL"
+          }
+        },
+        "utilities": {
+          "agents_ANL2022_gea_agent_gea_agent_GEAAgent_1": 0.3821841115,
+          "agents_bobo_agent_bobo_agent_BoboAgent_2": 0.9344303567
+        }
+      }
+    },
+    {
+      "Offer": {
+        "actor": "agents_ANL2022_gea_agent_gea_agent_GEAAgent_1",
+        "bid": {
+          "issuevalues": {
+            "issueA": "valueA",
+            "issueD": "valueL",
+            "issueB": "valueD",
+            "issueC": "valueF"
+          }
+        },
+        "utilities": {
+          "agents_ANL2022_gea_agent_gea_agent_GEAAgent_1": 0.945677214,
+          "agents_bobo_agent_bobo_agent_BoboAgent_2": 0.391723532
+        }
+      }
+    },
+    {
+      "Offer": {
+        "actor": "agents_bobo_agent_bobo_agent_BoboAgent_2",
+        "bid": {
+          "issuevalues": {
+            "issueA": "valueA",
+            "issueD": "valueI",
+            "issueB": "valueD",
+            "issueC": "valueL"
+          }
+        },
+        "utilities": {
+          "agents_ANL2022_gea_agent_gea_agent_GEAAgent_1": 0.7422041115,
+          "agents_bobo_agent_bobo_agent_BoboAgent_2": 0.9338636167
+        }
+      }
+    },
+    {
+      "Accept": {
+        "actor": "agents_ANL2022_gea_agent_gea_agent_GEAAgent_1",
+        "bid": {
+          "issuevalues": {
+            "issueA": "valueA",
+            "issueD": "valueI",
+            "issueB": "valueD",
+            "issueC": "valueL"
+          }
+        },
+        "utilities": {
+          "agents_ANL2022_gea_agent_gea_agent_GEAAgent_1": 0.7422041115,
+          "agents_bobo_agent_bobo_agent_BoboAgent_2": 0.9338636167
+        }
+      }
+    }
+  ],
+  "connections": [
+    "agents_ANL2022_gea_agent_gea_agent_GEAAgent_1",
+    "agents_bobo_agent_bobo_agent_BoboAgent_2"
+  ],
+  "progress": {
+    "ProgressTime": {
+      "duration": 20000,
+      "start": 1743856047168
+    }
+  },
+  "settings": {
+    "SAOPSettings": {
+      "participants": [
+        {
+          "TeamInfo": {
+            "parties": [
+              {
+                "party": {
+                  "partyref": "pythonpath:agents.ANL2022.gea_agent.gea_agent.GEAAgent",
+                  "parameters": {}
+                },
+                "profile": "file:domains/domain17/profileA.json"
+              }
+            ]
+          }
+        },
+        {
+          "TeamInfo": {
+            "parties": [
+              {
+                "party": {
+                  "partyref": "pythonpath:agents.bobo_agent.bobo_agent.BoboAgent",
+                  "parameters": {
+                    "storage_dir": "agent_storage/BoboAgent"
+                  }
+                },
+                "profile": "file:domains/domain17/profileB.json"
+              }
+            ]
+          }
+        }
+      ],
+      "deadline": {
+        "DeadlineTime": {
+          "durationms": 20000
+        }
+      }
+    }
+  },
+  "partyprofiles": {
+    "agents_ANL2022_gea_agent_gea_agent_GEAAgent_1": {
+      "party": {
+        "partyref": "pythonpath:agents.ANL2022.gea_agent.gea_agent.GEAAgent",
+        "parameters": {}
+      },
+      "profile": "file:domains/domain17/profileA.json"
+    },
+    "agents_bobo_agent_bobo_agent_BoboAgent_2": {
+      "party": {
+        "partyref": "pythonpath:agents.bobo_agent.bobo_agent.BoboAgent",
+        "parameters": {
+          "storage_dir": "agent_storage/BoboAgent"
+        }
+      },
+      "profile": "file:domains/domain17/profileB.json"
+    }
+  },
+  "error": null
+}

@@ -1,0 +1,10 @@
+{
+  "num_offers": 2185,
+  "agent_1": "HardlinerAgent",
+  "utility_1": 1.0,
+  "agent_2": "BoboAgent",
+  "utility_2": 0.7424475403,
+  "nash_product": 0.7424475403,
+  "social_welfare": 1.7424475403000002,
+  "result": "agreement"
+}

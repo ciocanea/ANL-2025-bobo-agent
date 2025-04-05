@@ -1,0 +1,10 @@
+{
+  "num_offers": 3099,
+  "agent_1": "DreamTeam109Agent",
+  "utility_1": 0.2305837204,
+  "agent_2": "BoboAgent",
+  "utility_2": 0.9402612499,
+  "nash_product": 0.21680893714989613,
+  "social_welfare": 1.1708449703000001,
+  "result": "agreement"
+}

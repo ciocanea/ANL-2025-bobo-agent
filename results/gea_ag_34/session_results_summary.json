@@ -1,0 +1,10 @@
+{
+  "num_offers": 27,
+  "agent_1": "GEAAgent",
+  "utility_1": 0.8464976966,
+  "agent_2": "BoboAgent",
+  "utility_2": 0.8837382126,
+  "nash_product": 0.7480823613633011,
+  "social_welfare": 1.7302359092,
+  "result": "agreement"
+}

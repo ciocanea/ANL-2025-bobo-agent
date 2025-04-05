@@ -1,0 +1,10 @@
+{
+  "num_offers": 2705,
+  "agent_1": "Agent11",
+  "utility_1": 0.62184887,
+  "agent_2": "BoboAgent",
+  "utility_2": 0.6987914656,
+  "nash_product": 0.4345426832490039,
+  "social_welfare": 1.3206403356,
+  "result": "agreement"
+}

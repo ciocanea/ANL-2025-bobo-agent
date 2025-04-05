@@ -1,0 +1,130 @@
+{
+  "actions": [
+    {
+      "Offer": {
+        "actor": "agents_bobo_agent_dynamic_flags_bobo_agent_BoboAgentDynamic_1",
+        "bid": {
+          "issuevalues": {
+            "issueB": "valueF",
+            "issueD": "valueH",
+            "issueE": "valueM",
+            "issueC": "valueA",
+            "issueA": "valueB"
+          }
+        },
+        "utilities": {
+          "agents_bobo_agent_dynamic_flags_bobo_agent_BoboAgentDynamic_1": 0.9589412004,
+          "agents_bobo_agent_bobo_agent_BoboAgent_2": 0.2762759289
+        }
+      }
+    },
+    {
+      "Offer": {
+        "actor": "agents_bobo_agent_bobo_agent_BoboAgent_2",
+        "bid": {
+          "issuevalues": {
+            "issueB": "valueB",
+            "issueD": "valueI",
+            "issueE": "valueM",
+            "issueC": "valueA",
+            "issueA": "valueB"
+          }
+        },
+        "utilities": {
+          "agents_bobo_agent_dynamic_flags_bobo_agent_BoboAgentDynamic_1": 0.3980127924,
+          "agents_bobo_agent_bobo_agent_BoboAgent_2": 0.8752165734
+        }
+      }
+    },
+    {
+      "Accept": {
+        "actor": "agents_bobo_agent_dynamic_flags_bobo_agent_BoboAgentDynamic_1",
+        "bid": {
+          "issuevalues": {
+            "issueB": "valueB",
+            "issueD": "valueI",
+            "issueE": "valueM",
+            "issueC": "valueA",
+            "issueA": "valueB"
+          }
+        },
+        "utilities": {
+          "agents_bobo_agent_dynamic_flags_bobo_agent_BoboAgentDynamic_1": 0.3980127924,
+          "agents_bobo_agent_bobo_agent_BoboAgent_2": 0.8752165734
+        }
+      }
+    }
+  ],
+  "connections": [
+    "agents_bobo_agent_dynamic_flags_bobo_agent_BoboAgentDynamic_1",
+    "agents_bobo_agent_bobo_agent_BoboAgent_2"
+  ],
+  "progress": {
+    "ProgressTime": {
+      "duration": 10000,
+      "start": 1743430703573
+    }
+  },
+  "settings": {
+    "SAOPSettings": {
+      "participants": [
+        {
+          "TeamInfo": {
+            "parties": [
+              {
+                "party": {
+                  "partyref": "pythonpath:agents.bobo_agent_dynamic_flags.bobo_agent.BoboAgentDynamic",
+                  "parameters": {
+                    "storage_dir": "agent_storage/BoboAgent"
+                  }
+                },
+                "profile": "file:domains/domain00/profileA.json"
+              }
+            ]
+          }
+        },
+        {
+          "TeamInfo": {
+            "parties": [
+              {
+                "party": {
+                  "partyref": "pythonpath:agents.bobo_agent.bobo_agent.BoboAgent",
+                  "parameters": {
+                    "storage_dir": "agent_storage/BoboAgent"
+                  }
+                },
+                "profile": "file:domains/domain00/profileB.json"
+              }
+            ]
+          }
+        }
+      ],
+      "deadline": {
+        "DeadlineTime": {
+          "durationms": 10000
+        }
+      }
+    }
+  },
+  "partyprofiles": {
+    "agents_bobo_agent_dynamic_flags_bobo_agent_BoboAgentDynamic_1": {
+      "party": {
+        "partyref": "pythonpath:agents.bobo_agent_dynamic_flags.bobo_agent.BoboAgentDynamic",
+        "parameters": {
+          "storage_dir": "agent_storage/BoboAgent"
+        }
+      },
+      "profile": "file:domains/domain00/profileA.json"
+    },
+    "agents_bobo_agent_bobo_agent_BoboAgent_2": {
+      "party": {
+        "partyref": "pythonpath:agents.bobo_agent.bobo_agent.BoboAgent",
+        "parameters": {
+          "storage_dir": "agent_storage/BoboAgent"
+        }
+      },
+      "profile": "file:domains/domain00/profileB.json"
+    }
+  },
+  "error": null
+}

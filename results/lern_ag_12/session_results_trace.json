@@ -1,0 +1,186 @@
+{
+  "actions": [
+    {
+      "Offer": {
+        "actor": "agents_ANL2022_learning_agent_learning_agent_LearningAgent_1",
+        "bid": {
+          "issuevalues": {
+            "issueB": "valueA",
+            "issueE": "valueA",
+            "issueF": "valueA",
+            "issueC": "valueB",
+            "issueD": "valueB",
+            "issueA": "valueC"
+          }
+        },
+        "utilities": {
+          "agents_ANL2022_learning_agent_learning_agent_LearningAgent_1": 0.95534,
+          "agents_bobo_agent_bobo_agent_BoboAgent_2": 0.469366829
+        }
+      }
+    },
+    {
+      "Offer": {
+        "actor": "agents_bobo_agent_bobo_agent_BoboAgent_2",
+        "bid": {
+          "issuevalues": {
+            "issueB": "valueB",
+            "issueE": "valueA",
+            "issueF": "valueA",
+            "issueC": "valueD",
+            "issueD": "valueB",
+            "issueA": "valueE"
+          }
+        },
+        "utilities": {
+          "agents_ANL2022_learning_agent_learning_agent_LearningAgent_1": 0.7595144724,
+          "agents_bobo_agent_bobo_agent_BoboAgent_2": 1.0
+        }
+      }
+    },
+    {
+      "Offer": {
+        "actor": "agents_ANL2022_learning_agent_learning_agent_LearningAgent_1",
+        "bid": {
+          "issuevalues": {
+            "issueB": "valueA",
+            "issueE": "valueA",
+            "issueF": "valueA",
+            "issueC": "valueB",
+            "issueD": "valueB",
+            "issueA": "valueC"
+          }
+        },
+        "utilities": {
+          "agents_ANL2022_learning_agent_learning_agent_LearningAgent_1": 0.95534,
+          "agents_bobo_agent_bobo_agent_BoboAgent_2": 0.469366829
+        }
+      }
+    },
+    {
+      "Offer": {
+        "actor": "agents_bobo_agent_bobo_agent_BoboAgent_2",
+        "bid": {
+          "issuevalues": {
+            "issueB": "valueB",
+            "issueE": "valueA",
+            "issueF": "valueA",
+            "issueC": "valueD",
+            "issueD": "valueB",
+            "issueA": "valueE"
+          }
+        },
+        "utilities": {
+          "agents_ANL2022_learning_agent_learning_agent_LearningAgent_1": 0.7595144724,
+          "agents_bobo_agent_bobo_agent_BoboAgent_2": 1.0
+        }
+      }
+    },
+    {
+      "Offer": {
+        "actor": "agents_ANL2022_learning_agent_learning_agent_LearningAgent_1",
+        "bid": {
+          "issuevalues": {
+            "issueB": "valueB",
+            "issueE": "valueA",
+            "issueF": "valueA",
+            "issueC": "valueE",
+            "issueD": "valueA",
+            "issueA": "valueC"
+          }
+        },
+        "utilities": {
+          "agents_ANL2022_learning_agent_learning_agent_LearningAgent_1": 0.9937686192,
+          "agents_bobo_agent_bobo_agent_BoboAgent_2": 0.7919773976
+        }
+      }
+    },
+    {
+      "Accept": {
+        "actor": "agents_bobo_agent_bobo_agent_BoboAgent_2",
+        "bid": {
+          "issuevalues": {
+            "issueB": "valueB",
+            "issueE": "valueA",
+            "issueF": "valueA",
+            "issueC": "valueE",
+            "issueD": "valueA",
+            "issueA": "valueC"
+          }
+        },
+        "utilities": {
+          "agents_ANL2022_learning_agent_learning_agent_LearningAgent_1": 0.9937686192,
+          "agents_bobo_agent_bobo_agent_BoboAgent_2": 0.7919773976
+        }
+      }
+    }
+  ],
+  "connections": [
+    "agents_ANL2022_learning_agent_learning_agent_LearningAgent_1",
+    "agents_bobo_agent_bobo_agent_BoboAgent_2"
+  ],
+  "progress": {
+    "ProgressTime": {
+      "duration": 20000,
+      "start": 1743856915099
+    }
+  },
+  "settings": {
+    "SAOPSettings": {
+      "participants": [
+        {
+          "TeamInfo": {
+            "parties": [
+              {
+                "party": {
+                  "partyref": "pythonpath:agents.ANL2022.learning_agent.learning_agent.LearningAgent",
+                  "parameters": {}
+                },
+                "profile": "file:domains/domain12/profileA.json"
+              }
+            ]
+          }
+        },
+        {
+          "TeamInfo": {
+            "parties": [
+              {
+                "party": {
+                  "partyref": "pythonpath:agents.bobo_agent.bobo_agent.BoboAgent",
+                  "parameters": {
+                    "storage_dir": "agent_storage/BoboAgent"
+                  }
+                },
+                "profile": "file:domains/domain12/profileB.json"
+              }
+            ]
+          }
+        }
+      ],
+      "deadline": {
+        "DeadlineTime": {
+          "durationms": 20000
+        }
+      }
+    }
+  },
+  "partyprofiles": {
+    "agents_ANL2022_learning_agent_learning_agent_LearningAgent_1": {
+      "party": {
+        "partyref": "pythonpath:agents.ANL2022.learning_agent.learning_agent.LearningAgent",
+        "parameters": {}
+      },
+      "profile": "file:domains/domain12/profileA.json"
+    },
+    "agents_bobo_agent_bobo_agent_BoboAgent_2": {
+      "party": {
+        "partyref": "pythonpath:agents.bobo_agent.bobo_agent.BoboAgent",
+        "parameters": {
+          "storage_dir": "agent_storage/BoboAgent"
+        }
+      },
+      "profile": "file:domains/domain12/profileB.json"
+    }
+  },
+  "error": null
+}
