@@ -255,7 +255,7 @@ class BoboAgent(DefaultParty):
         if offered_util >= 0.9:
             return True
 
-        if self.opponent_is_greedy and offered_util > 0.65:
+        if self.opponent_is_greedy and offered_util > 0.75:
             return True  # Take the decent deal while you can
 
         if self.opponent_model:

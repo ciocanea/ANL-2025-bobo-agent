@@ -25,8 +25,8 @@ settings = {
             "parameters": {"storage_dir": "agent_storage/BoboAgent"},
         },
     ],
-    "profiles": ["domains/domain02/profileA.json", "domains/domain02/profileB.json"],
-    "deadline_time_ms": 10000,
+    "profiles": ["domains/domain16/profileA.json", "domains/domain16/profileB.json"],
+    "deadline_time_ms": 20000,
 }
 
 # run a session and obtain results in dictionaries
